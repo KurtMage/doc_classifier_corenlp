@@ -1,1 +1,1 @@
-# doc_classifier_corenlp
+# PredictionIO Document classifier engine using Stanford CoreNLP library

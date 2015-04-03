@@ -1,0 +1,18 @@
+{
+  "id": "default",
+  "description": "Default settings",
+  "engineFactory": "io.prediction.classifier.ClassificationEngine",
+  "datasource": {
+    "params" : {
+      "appId": 4
+    }
+  },
+  "algorithms": [
+    {
+      "name": "algo",
+      "params": {
+        "sigma": 1.0
+      }
+    }
+  ]
+}
