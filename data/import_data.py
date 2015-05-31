@@ -34,43 +34,35 @@ def sendData(args):
             # we've finished concatenating, loads() it into our collection
             if line.startswith("}"):
                 buildingString = False
+                # add the json object to our list of objects
                 jsonObjects.append(json.loads(jsonString))
                 jsonString = ""
     if buildingString:
         raise RuntimeError("a string did not finish building by the end of file")
-    print(len(jsonObjects))
 
 
+    # now go through the objects and for each interest, create an event
+    counter = 0
+    for jsonObject in jsonObjects:
+        message = jsonObject["message"]
+
+        for interest in jsonObject["adgroup"]["targeting"]["interests"]:
+            interestName = interest["name"]
+            counter += 1
+
+            response = client.create_event(
+                event="$set",
+                entity_type="phrase",
+                entity_id=counter,
+                properties= { "phrase" : message,
+                              "Interest" : interestName
+                }
+            )
+
+            print response
+            print(counter)
 
 
-
-
-    # line = file.readline();
-    # counter = 1;
-    
-    # while line!="":
-
-
-    #   line = line.split(" ");
-
-
-    #   interest =  str(" ".join(line[len(line)-1]).replace("\n","").replace(" ",""));
-    #   subString =  str(" ".join(line[0:len(line)-1]));      
-    #   #response = client.create_event(
-    #       #event="$set",
-    #       #entity_type="phrase",
-    #       #entity_id=counter,
-    #       #properties= { "phrase" : subString,
-    #       #              "Interest" : interest
-    #       #}
-    #  # )
-    #   #print response
-    #   print subString # Kurt testing
-    #   print counter;
-      
-    #   #Read New Line
-    #   counter = counter + 1;
-    #   line = file.readline();
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(
     description="Import sample data for classification engine")
