@@ -46,21 +46,21 @@ def sendData(args):
     for jsonObject in jsonObjects:
         message = jsonObject["message"]
 
-        for interest in jsonObject["adgroup"]["targeting"]["interests"]:
-            interestName = interest["name"]
-            counter += 1
+        if message is not None:
+            for interest in jsonObject["adgroup"]["targeting"]["interests"]:
+                interestName = interest["name"]
+                counter += 1
 
-            response = client.create_event(
-                event="$set",
-                entity_type="phrase",
-                entity_id=counter,
-                properties= { "phrase" : message,
-                              "Interest" : interestName
-                }
-            )
-
-            print response
-            print(counter)
+                response = client.create_event(
+                    event="$set",
+                    entity_type="phrase",
+                    entity_id=counter,
+                    properties= { "phrase" : message,
+                                  "Interest" : interestName
+                    }
+                )
+                print response
+                print(counter)
 
 
 if __name__ == '__main__':
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     description="Import sample data for classification engine")
   parser.add_argument('--access_key', default='invald_access_key')
   parser.add_argument('--url', default="http://localhost:7070")
-  parser.add_argument('--file', default="simple.json")
+  parser.add_argument('--file', default="cleanAdHuskyData300.json")
 
   args = parser.parse_args()
   print args

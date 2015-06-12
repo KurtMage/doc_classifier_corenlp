@@ -13,14 +13,14 @@ class DataSource(val dsp: DataSourceParams) extends PDataSource[
 
   override def readTraining(sc: SparkContext): TrainingData = {
     val events =
-      Storage.getPEvents().find(appId = dsp.appId, entityType = Some("news"))(sc).collect()
+      Storage.getPEvents().find(appId = dsp.appId, entityType = Some("phrase"))(sc).collect()
 
     val dataset = new Dataset[String, String]
     events.foreach { event =>
       val strings = Array(
-        event.properties.get[String]("label"),
+        event.properties.get[String]("phrase"),
         event.entityId,
-        event.properties.get[String]("text"))
+        event.properties.get[String]("Interest"))
 
       val datum = ClassifierUtil.makeDatumFromStrings(strings)
       dataset.add(datum)
